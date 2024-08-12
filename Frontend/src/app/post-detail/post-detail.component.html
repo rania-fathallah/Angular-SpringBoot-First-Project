@@ -1,0 +1,46 @@
+<div class="page">
+    <div class="post-details-container">
+      <ng-container *ngIf="post && post.photos && post.photos.length > 0">
+        <div class="images">
+          <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+              <div class="carousel-inner">
+                  <ng-container *ngFor="let photo of post.photos; let j = index">
+                      <div class="carousel-item" [class.active]="j === 0">
+                          <img class="d-block w-100" [src]="photo" class="card-img-top" alt="maison/terrain">
+                      </div>
+                  </ng-container>
+                </div>
+                <a class="carousel-control-prev" role="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" role="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+      </div>
+        
+      </ng-container>
+  
+      <div class="post-details">
+        <h2>{{ post.title }}</h2>
+        <p><strong>Description:</strong> {{ post.description }}</p>
+        <p><strong>Type:</strong> {{ post.type }}</p>
+        <p><strong>Offer:</strong> {{ post.offer }}</p>
+        <p *ngIf="post.type === 'House'"><strong>Number of Rooms:</strong> {{ post.numberRooms }}</p>
+        <p><strong>City:</strong> {{ post.city }}</p>
+        <p><strong>Price:</strong> {{ post.price | currency }}</p>
+      </div>
+  
+      <div class="contact-details">
+        <h3>Contact Information</h3>
+        <p><strong>Name:</strong> {{ post.contact.name }}</p>
+        <p><strong>Email:</strong> {{ post.contact.email }}</p>
+        <p><strong>Phone:</strong> {{ post.contact.phone }}</p>
+      </div>
+  
+      <button class="btn btn-back" (click)="onPosts()">Back to Posts</button>
+    </div>
+  </div>
+  

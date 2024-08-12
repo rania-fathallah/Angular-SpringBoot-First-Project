@@ -1,0 +1,26 @@
+.alert.alert-danger {
+    margin-top: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px 100px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.not-found-image {
+    max-width: 2020px;
+    margin-bottom: 10px;
+}
+
+.error-message {
+    font-weight: bold;
+    font-size: 20px;
+    color: #ad1da6;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  

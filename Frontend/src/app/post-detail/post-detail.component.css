@@ -1,0 +1,41 @@
+.page {
+    padding: 30px 0;
+    text-align: center;
+    background: rgb(224, 251, 222);
+    background: linear-gradient(360deg, rgb(245, 255, 245) 0%, #dbbbbbb6 100%);
+  }
+.post-details-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .post-details {
+    margin-bottom: 20px;
+  }
+  
+  .post-details h2 {
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .post-details p {
+    margin-bottom: 5px;
+  }
+  
+  .btn-back {
+    padding: 10px 20px;
+    background-color: #a16ae0;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn-back:hover {
+    background-color: #7e3cb4;
+  }
+  

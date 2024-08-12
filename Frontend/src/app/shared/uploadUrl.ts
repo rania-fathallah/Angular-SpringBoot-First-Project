@@ -1,0 +1,1 @@
+export const uploadUrl = "http://localhost:8085/upload-file";

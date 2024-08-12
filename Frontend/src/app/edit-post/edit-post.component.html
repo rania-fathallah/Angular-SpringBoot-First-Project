@@ -1,0 +1,164 @@
+<div class="page">
+    <div class="post-form">
+        <div class="post-form-box">
+            <h3 *ngIf="!post.id ; else update">Add Post</h3>
+            <ng-template #update>
+                <h3>Update Post</h3>
+            </ng-template>
+            <form (ngSubmit)="onAddPost()" #form="ngForm">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Title</span>
+                    <input type="text" class="form-control" placeholder="Title" aria-label="Title" name="title" required
+                        [(ngModel)]="post.title" #title="ngModel"
+                        [ngClass]="{'is-invalid':title.invalid && title.dirty,'is-valid':title.valid}">
+                    <div *ngIf="title.invalid && title.dirty" class="invalid-feedback">
+                        Please provide a title.
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Superficie</span>
+                    <input type="number" class="form-control" id="superficie" name="superficie" required
+                        [(ngModel)]="post.superficie" #superficie="ngModel"
+                        [ngClass]="{'is-invalid':superficie.invalid && superficie.dirty,'is-valid':superficie.valid}">
+                    <span class="input-group-text">m²</span>
+                    <div *ngIf="superficie.invalid && superficie.dirty" class="invalid-feedback">
+                        Please provide a superficie.
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+
+                    <span class="input-group-text">Images</span>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="customFile" name="photos" multiple
+                            (change)="onFileSelected($event)">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div>
+
+
+
+                </div>
+                <div *ngIf="currentFile" class="progress my-3">
+                    <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                        attr.aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100"
+                        [ngStyle]="{ width: progress + '%' }">
+                        {{ progress }}%
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="col-md-6">
+                        <span class="input-group-text">Offer</span>
+                        <select class="form-select" aria-label="Offer" name="offer" [(ngModel)]="post.offer">
+                            <option value="Sale">Sale</option>
+                            <option value="Rent">Rent</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="input-group-text">Type</span>
+                        <select class="form-select" aria-label="Type" name="type" [(ngModel)]="post.type"
+                            (ngModelChange)="onTypeChange($event)">
+                            <option value="House">House</option>
+                            <option value="Land">Land</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text">Number of Rooms</span>
+                            <input type="number" class="form-control" placeholder="Number of Rooms"
+                                aria-label="Number of Rooms" name="numberRooms" [(ngModel)]="post.numberRooms"
+                                [disabled]="post.type === 'Land'">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text">City</span>
+                            <div class="input-group-prepend">
+                                <select class="form-select" aria-label="City" name="city" [(ngModel)]="post.city">
+                                    <option selected disabled hidden>Choose City</option>
+                                    <option *ngFor="let city of cities">{{ city }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Location</span>
+                    <input type="text" class="form-control" placeholder="Location" aria-label="Location" name="location"
+                        required [(ngModel)]="post.location" #location="ngModel"
+                        [ngClass]="{'is-invalid':location.invalid && location.dirty,'is-valid':location.valid}">
+                    <div *ngIf="location.invalid && location.dirty" class="invalid-feedback">
+                        Please provide the location.
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">$</span>
+                    <input type="text" class="form-control" placeholder="Price" aria-label="Price" name="price" required
+                        [(ngModel)]="post.price" #price="ngModel"
+                        [ngClass]="{'is-invalid':price.invalid && price.dirty,'is-valid':price.valid}">
+                    <span class="input-group-text">.00</span>
+                    <div *ngIf="price.invalid && price.dirty" class="invalid-feedback">
+                        Please provide the price.
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Description</span>
+                    <textarea class="form-control" id="description" placeholder="Description" name="description"
+                        required [(ngModel)]="post.description" #description="ngModel"
+                        [ngClass]="{'is-invalid':description.invalid && description.dirty,'is-valid':description.valid}"></textarea>
+                    <div *ngIf="description.invalid && description.dirty" class="invalid-feedback">
+                        Please provide a description.
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+                    <label class="form-label input-group-text" style="margin-right: 10px;">Contact</label>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" placeholder="Name" aria-label="Name" name="name"
+                                required [(ngModel)]="post.contact.name" #name="ngModel"
+                                [ngClass]="{'is-invalid':name.invalid && name.dirty,'is-valid':name.valid}">
+                            <div *ngIf="name.invalid && name.dirty" class="invalid-feedback">
+                                Please provide a name.
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="tel" class="form-control" placeholder="Phone Number" aria-label="Phone Number"
+                                name="phone" required [(ngModel)]="post.contact.phone" #phone="ngModel"
+                                [ngClass]="{'is-invalid':phone.invalid && phone.dirty,'is-valid':phone.valid}">
+                            <div *ngIf="phone.invalid && phone.dirty" class="invalid-feedback">
+                                Please provide a phone number.
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <input type="email" class="form-control" placeholder="Email" aria-label="Email" name="phone"
+                                name="email" required [(ngModel)]="post.contact.email"
+                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" #email="ngModel"
+                                [ngClass]="{'is-invalid':email.invalid && email.dirty ,'is-valid':email.valid}">
+                            <div *ngIf="email.invalid && email.dirty" class="invalid-feedback">
+                                Please provide a valid email.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!post.id;else updateB" class="btn-0">
+                    <button type="submit" class="btn btn-add">Add</button>
+                </div>
+                <ng-template #updateB>
+                    <div class="btn-0">
+                        <button type="submit" class="btn btn-add">Update</button>
+                    </div>
+                </ng-template>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+<body class="img js-fullheight" style="background-image: url(../../assets/bg.jpg);">
+	<section class="ftco-section" style="padding-top: 20px;">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-6 text-center mb-5" style="margin-left: -20px;">
+					<img src="../../assets/logo_transparent.png" style="max-width: 300px;">
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-md-6 col-lg-4">
+					<div class="login-wrap p-0">
+						<h3 class="mb-4 text-center">Have an account?</h3>
+						<form (ngSubmit)="login()" class="signin-form" #form="ngForm">
+							<div class="form-group">
+								<input id="username-field" type="text" class="form-control" placeholder="Username" 
+									name="username" [(ngModel)]="user.username" required #username="ngModel"
+									[ngClass]="{'is-invalid': username.invalid && username.dirty,'is-valid': username.valid}">
+								<div *ngIf="username.invalid && username.dirty" class="invalid-feedback">
+									Please provide a username.
+								</div>
+							</div>
+							<div class="form-group">
+								<input id="password-field" type="password" class="form-control" placeholder="Password"
+									name="password" [(ngModel)]="user.password" required #password="ngModel"
+									[ngClass]="{'is-invalid':password.invalid && password.dirty,'is-valid':password.valid}">
+								<div *ngIf="password.invalid && password.dirty" class="invalid-feedback">
+									Please provide a password.
+								</div>
+								<span toggle="#password-field"
+									class="fa fa-fw fa-eye field-icon toggle-password"></span>
+							</div>
+							<div class="form-group">
+								<button type="submit" class="form-control btn btn-primary submit px-3">Sign In</button>
+							</div>
+							<div class="form-group" *ngIf="loginError">
+								<p class="text-white">{{ loginError }}</p>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>

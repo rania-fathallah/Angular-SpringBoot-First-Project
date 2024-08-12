@@ -1,0 +1,165 @@
+<div class="catalogue">
+
+
+  <h1 class="header">Catalogue</h1>
+
+
+
+  <div [style.display]="showFilter ?  'none': 'block'">
+    <button class="button-62" role="button"><span class="text" (click)="toggleFilterBox()">Show Filter</span></button>
+  </div>
+
+
+  <div class="filter-box" [style.display]="showFilter ? 'block' : 'none'">
+    <div class="s007">
+
+      <div class="advance-search">
+        <span class="desc">Advanced Filter</span>
+        <div class="filter-rows">
+          <div class="row">
+            <div class="input-field">
+              <div class="input-select">
+                <select data-trigger="" name="category" [(ngModel)]="category">
+                  <option [ngValue]="null" disabled selected>CATEGORY</option>
+                  <option>House</option>
+                  <option>Land</option>
+                </select>
+              </div>
+            </div>
+            <div class="input-field">
+              <div class="input-select">
+                <select data-trigger="" name="offer" [(ngModel)]="offer">
+                  <option [ngValue]="null" disabled selected>OFFER</option>
+                  <option>Sale</option>
+                  <option>Rent</option>
+                </select>
+              </div>
+            </div>
+            <div class="input-field" *ngIf="category !== 'Land'">
+              <div class="input-select">
+                <input type="number" placeholder="Number of Rooms" name="numberOfRooms" [(ngModel)]="numberOfRooms">
+              </div>
+            </div>
+          </div>
+          <div class="row second">
+            <div class="input-field">
+              <div class="input-select">
+                <div class="dropdown">
+                  <button (click)="toggleDropdown()" class="dropbtn">Select Cities</button>
+                  <div *ngIf="isDropdownOpen" class="dropdown-content">
+                    <div *ngFor="let city of cities" class="city-checkbox">
+                      <div class="row">
+                        <input type="checkbox" [id]="city" [name]="city" [checked]="selectedCities[city]"
+                          (change)="updateSelectedCities(city, $event)">
+
+                        <label [for]="city" class="label-city">{{ city }}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="input-field">
+              <div class="input-select">
+                <input type="number" placeholder="Min Price" [(ngModel)]="minPrice"
+                  [ngClass]="{ 'red-border': maxPrice && minPrice > maxPrice }">
+              </div>
+            </div>
+            <div class="input-field">
+              <div class="input-select">
+                <input type="number" placeholder="Max Price" [(ngModel)]="maxPrice"
+                  [ngClass]="{ 'red-border': minPrice && maxPrice < minPrice }">
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="row third">
+        <div class="input-field">
+          <div class="btn-0">
+            <button class="btn-filter btn" (click)="applyFilter()" [disabled]="isFilterDisabled()">Filter</button>
+            <button class="btn-reset btn" (click)="resetInputs()">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="btn-1">
+      <button class="btn-remove" (click)="toggleFilterBox()">back</button>
+    </div>
+  </div>
+
+
+
+  <div class="text-left" *ngIf="isAuth">
+    <button class="btn btn-custom" role="button" (click)="onAddPost()">Add Post</button>
+  </div>
+
+
+  <ng-container *ngIf="posts?.length > 0; else noPosts">
+    <div class="row row-cols-1 row-cols-md-3 g-4 mx-md-5 my-md-3">
+      <div class="col" *ngFor="let post of posts">
+        <div class="card h-100 custom-card">
+          <ng-container *ngIf="post.photos?.length > 0; else noPhotos; context: { post: Post }">
+            <div class="images">
+              <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                  <div class="carousel-inner">
+                      <ng-container *ngFor="let photo of post.photos; let j = index">
+                          <div class="carousel-item" [class.active]="j === 0">
+                              <img class="d-block w-100" [src]="photo" class="card-img-top" alt="maison/terrain">
+                          </div>
+                      </ng-container>
+                  </div>
+                  <a class="carousel-control-prev" [href]="'#carouselExampleControls'" role="button" data-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="carousel-control-next" [href]="'#carouselExampleControls'" role="button" data-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="sr-only">Next</span>
+                  </a>
+              </div>
+          </div>
+          </ng-container>
+          <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text">{{ post.description }}</p>
+            <p class="card-text">Price: {{ post.price | currency }}</p>
+            <p class="card-text">{{ post.offer === 'Sale' ? 'For Sale' : 'For Rent' }}</p>
+            <p class="card-text">Location: {{ post.city }}</p>
+          </div>
+          <div class="card-footer">
+            <td><a class="btn btn-detail btn-lg" routerLink="/post/{{post.id}}">Detail</a></td>
+            <td *ngIf="isAuth"><a class="btn btn-edit btn-lg" routerLink="/post/edit/{{post.id}}">Edit</a></td>
+            <td *ngIf="isAuth"><a class="btn btn-delete btn-lg" (click)="onDelete(post.id)">Delete</a></td>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  
+  
+
+</div>
+<div *ngIf="isWaiting" class="loading-container">
+  <div class="spinner-border spinner" role="status"></div>
+  <h4>Loading... Please wait!</h4>
+</div>
+
+<ng-template #noPosts>
+  <div [hidden]="isWaiting" class="no-posts-message">No posts available.</div>
+  <div *ngIf="errMess" class="error-message">
+    <h2>Error</h2>
+    <h4>{{ errMess }}</h4>
+  </div>
+</ng-template>
+
+<ng-template #noPhotos let-post>
+  <ng-container *ngIf="post.type === 'House'; else landDefault">
+    <img src="../../assets/house-default.png" class="d-block w-100" alt="Post Image">
+  </ng-container>
+</ng-template>
+<ng-template #landDefault>
+  <img src="../../assets/Land-default.png" class="d-block w-100" alt="Post Image">
+</ng-template>
